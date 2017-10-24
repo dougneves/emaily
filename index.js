@@ -13,7 +13,9 @@ app.use(pp.session())
 
 require('./models/user')
 require('./services/passport')
+
 require('./routes/authRoutes')(app)
+require('./routes/billingRoutes')(app)
 
 mongoose.connect(keys.mongoURI)
 
