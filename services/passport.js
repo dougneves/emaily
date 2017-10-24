@@ -22,16 +22,12 @@ pp.use(
       callbackURL: '/auth/google/callback',
       proxy: true
     },
-    (accessToken, refreshToken, profile, done) => {
-      User.findOne({ googleId: profile.id }).then(user => {
-        if (user) {
-          done(null, user)
-        } else {
-          User({ googleId: profile.id }).save().then(newUser => {
-            done(null, newUser)
-          })
-        }
-      })
+    async (accessToken, refreshToken, profile, done) => {
+      const user = await User.findOne({ googleId: profile.id })
+
+      if (user) return done(null, user)
+      const newUser = await User({ googleId: profile.id }).save()
+      return done(null, newUser)
     }
   )
 )
